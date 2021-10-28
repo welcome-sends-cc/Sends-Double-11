@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" id="viewportMeta" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <title>1</title>
+</head>
+<body>
+    <script type="text/javascript">
+		var initViewport = function(height){
+		var metaEl = document.querySelector("#viewportMeta");
+		var content = "width=device-width,initial-scale=1.0,user-scalable=no,maximum-scale=1.0,height=" + height;
+		metaEl.setAttribute('name', 'viewport');
+		metaEl.setAttribute('content', content);
+		}
+		initViewport(window.innerHeight);
+
+		var addEvenListener = function(callback, eventName) {
+    	let addEvenListenerFn = window.addEventListener || window.attatchEvent;
+    	let messageEvent = window.addEventListener ? eventName : "on" + eventName;
+    	addEvenListenerFn(messageEvent, callback, false);
+ 		}
+  
+		addEvenListener(function(){
+		setTimeout(function(){
+		initViewport(window.innerHeight);
+		},300)
+		},"orientationchange")
+    </script>
+	<div id="app"  @touchstart="touched($event)" @touchmove="moved($event)" @touchend="ended" >
+		<audio id="audio" src="E:\workplace\code\web\双11\music.mp3" loop="loop"></audio>
+		<div id="background"></div>
+		<div id="header">
+			<div>Color测</div>
+			<div id="music" @click="play()" v-if="!playmusic">♫</div>
+			<div id="music" @click="pause()" v-if="playmusic">■</div>
+		</div>
+		<div id="main">
+			<div class="notice">欢迎进入</div>
+			<div class="notice">购物决策风格趣味测试</div>
+			<div id="bg"></div>
+		</div>
+		<div id="footer">
+			<div id="down" @click="nextpage"></div>
+		</div>
+	</div>
+</body>
+  <style>
+	  * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+        }
+		@keyframes twinkle {
+			0% {
+				opacity: 0.7;
+			}
+			100% {
+				opacity: 0.2;
+			}
+		}
+        #background{
+			position: absolute;
+			width: 100vw;
+			height: 100vh;
+            background: radial-gradient(circle, 
+				hsl(190deg, 80% ,70%),
+				hsl(250deg, 80%, 70%),
+				hsl(320deg, 80%, 70%)
+            );
+            background-size: 200% 200%;
+			filter: blur(1px);
+        }
+		#header {
+			position: relative;
+			width: 100vw;
+			height: 10vh;
+			background-color: white;
+			text-align: center;
+			line-height: 10vh;
+			opacity: 0.5;
+		}
+		#music {
+			position: absolute;
+			top: 0%;
+			left: 90%;
+			font-weight: bolder;
+			font-size: 7vw;
+		}
+		#main {
+			width: 100vw;
+			height: 75vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			text-align: center;
+		}
+		.notice {
+			font-size: 8vw;
+			color: white;
+			opacity: 0.7;
+		}
+		#bg {
+			position: absolute;
+			width: 100vw;
+			height: 40vh;
+			background-color: white;
+			opacity: 0.3;
+		}
+		#footer {
+			width: 100vw;
+			height: 15vh;
+		}
+		#down {
+		  width: 20vw;
+		  height: 20vw;
+		  margin: 0 auto;
+		  opacity: 0.7;
+		  border-right: 1.5vw white solid;
+		  border-bottom: 1.5vw white solid;
+		  transform:rotate(45deg);
+		  animation-name: twinkle;
+		  animation-duration: 1.5s;
+		  animation-direction: alternate;
+		  animation-iteration-count: infinite;
+	    }
+  </style>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+          playmusic:0,
+		  startY:0,
+		  moveY:0,
+		  distance:0
+      },
+	  methods: {
+		play(){
+			audio.play();
+			this.playmusic=1;
+		},
+		pause(){
+			audio.pause();
+			this.playmusic=0;
+		},
+		touched(e){
+			console.log(e);
+			startY = e.targetTouches[0].pageY;
+			console.log(startY)
+		},
+		moved(e){
+			moveY = e.targetTouches[0].pageY;
+			console.log(moveY)
+		},
+		ended(e){
+			distance = startY-moveY;
+			if(startY>screen.height*0.5&&distance>screen.height*0.2){
+				location.href="2.html"
+			}
+		},
+		nextpage(){
+			location.href="2.html"
+		}
+
+	  }
+    })
+  </script>
+</html>

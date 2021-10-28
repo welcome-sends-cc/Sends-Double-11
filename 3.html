@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" id="viewportMeta" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <title>3</title>
+</head>
+<body>
+    <script type="text/javascript">
+		var initViewport = function(height){
+		var metaEl = document.querySelector("#viewportMeta");
+		var content = "width=device-width,initial-scale=1.0,user-scalable=no,maximum-scale=1.0,height=" + height;
+		metaEl.setAttribute('name', 'viewport');
+		metaEl.setAttribute('content', content);
+		}
+		initViewport(window.innerHeight);
+
+		var addEvenListener = function(callback, eventName) {
+    	let addEvenListenerFn = window.addEventListener || window.attatchEvent;
+    	let messageEvent = window.addEventListener ? eventName : "on" + eventName;
+    	addEvenListenerFn(messageEvent, callback, false);
+ 		}
+  
+		addEvenListener(function(){
+		setTimeout(function(){
+		initViewport(window.innerHeight);
+		},300)
+		},"orientationchange")
+    </script>
+	<div id="app">
+		<audio id="audio" src="E:\workplace\code\web\双11\music.mp3" loop="loop"></audio>
+		<div id="background"></div>
+    	<div id="header">
+			<div>Color测</div>
+			<div id="music" @click="play()" v-if="!playmusic">♫</div>
+			<div id="music" @click="pause()" v-if="playmusic">■</div>
+		</div>
+		<div id="main">
+			<div id="card">
+				<div id="question" v-text=this.questions[index].question></div>
+				<ul id="options">
+					<li v-text="this.questions[this.index].options[0]" :class="this.classes[this.index][0]" @click="select(0)"></li>
+					<li v-text="this.questions[this.index].options[1]" :class="this.classes[this.index][1]" @click="select(1)"></li>
+					<li v-text="this.questions[this.index].options[2]" :class="this.classes[this.index][2]" @click="select(2)"></li>
+					<li v-text="this.questions[this.index].options[3]" :class="this.classes[this.index][3]" @click="select(3)"></li>
+				</ul>
+				<div id="picture"></div>
+			</div>
+		</div>
+		<div id="footer">
+			<div id="pgup" class="footericon" @click="indexreduce">上一题</div>
+			<div id="pgnow" class="footericon" v-text="this.index+1+'/6'"></div>
+			<div id="pudn" class="footericon" @click="indexplus" v-if="this.index!=5">下一题</div>
+			<div id="submit" class="footericon" @click="submit" v-if="this.index==5">提交</div>
+		</div>
+	</div>
+</body>
+  <style>
+	  * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+        }
+		#background{
+			position: absolute;
+			width: 100vw;
+			height: 100vh;
+            background: radial-gradient(circle, 
+			hsl(320deg, 80%, 70%),
+			hsl(250deg, 80%, 70%),
+			hsl(190deg, 80% ,70%) 150%
+            );
+		}
+		#header {
+			position: relative;
+			width: 100vw;
+			height: 10vh;
+			background-color: white;
+			text-align: center;
+			line-height: 10vh;
+			opacity: 0.5;
+		}
+		/* #header::after {
+			content: "♫";
+			position: absolute;
+			top:0%;
+			left:90%;
+			font-weight: bolder;
+			font-size: 7vw;
+		} */
+		#music {
+			position: absolute;
+			top: 0%;
+			left: 90%;
+			font-weight: bolder;
+			font-size: 7vw;
+		}
+		#main {
+			position: relative;
+			width: 100vw;
+			height: 80vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			text-align: center;
+		}
+		#card {
+			position: relative;
+			margin-top: 5vh;
+			width: 90vw;
+			height: 80vh;
+			opacity: 0.7;
+			color:white;
+			background-color: white;
+		}
+		#question {
+			width: 70vw;
+			height: 10vh;
+			margin: 4vh auto 2vh auto;
+			font-size: 2vh;
+			color: black;
+			font-weight: bolder;
+			border-radius: 3vw;
+		}
+		#options {
+			position: relative;
+			width: 70vw;
+			height: 30vh;
+			margin: 0 auto 3vh auto;
+		}
+		#options >* {
+			list-style-type: none;
+			width: 70vw;
+			height: 5vh;
+			line-height: 5vh;
+			margin-bottom: 3vh;
+			background-color: black;
+			border-radius: 5vw;
+		}
+		.selectedoption {
+			background-color: rgb(29, 100, 182) !important;
+		}
+		#picture {
+			background-image: url(动画.png);
+			background-size: 86vw 25vh;
+			margin: 0 auto 2vh auto;
+			width: 86vw;
+			height: 25vh;
+		}
+		#footer {
+			position: relative;
+			width: 100vw;
+			height: 10vh;
+			display: flex;
+			justify-content: space-around;
+			align-items: flex-end;
+			padding: 0 0 3vh 0;
+		}
+		.footericon {
+			width: 20vw;
+			height: 3vh;
+			line-height: 3vh;
+			text-align: center;
+			background-color: white;
+			border-radius: 3vw;
+			opacity: 0.7;
+		}
+		#pgnow {
+			background-color: inherit;
+		}
+  </style>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+         questions:[
+			 {
+				question:"你热衷尝试乐事的新口味薯片或者新口味饮料吗？",
+			 	options:["非常热衷","比较喜欢","只是好奇","怎么尝试"]
+			 },
+			 {
+				question:"网购时你会花时间薅羊毛吗？",
+			 	options:["总是关注","能薅则薅","偶尔看看","不感兴趣"]
+			 },{
+				question:"购物时你有会你头脑一热、过后又疯狂想要剁手吗？",
+			 	options:["总是这种感觉","多次这种感觉","只是有时候","偶尔会吧"]
+			 },{
+				question:"如果你发现一件短袖很有设计感，但是所在店铺从没听过，你会购买吗？",
+			 	options:["喜欢就买呗","再看看其他商品","有点担心商品的质量",""]
+			 },{
+				question:"你喜欢囤货吗",
+			 	options:["囤货给我安全感","囤不过期的货","很少囤","不想囤占地方"]
+			 },{
+				question:"在购物时，你会货比三家吗",
+			 	options:["不止三家，是N家","一般比一比 比较稳妥","有时候会比较","一眼看上就不比啦"]
+			 },
+		 ],
+		 answers:["","","","","",""],
+		 index:0,
+		 classes:[
+			 ["","","",""],
+			 ["","","",""],
+			 ["","","",""],
+			 ["","","",""],
+			 ["","","",""],
+			 ["","","",""]
+		 ],
+		 playmusic:0
+      },
+	  methods: {
+		  select(option){
+			this.answers[this.index]=option+1;
+			this.classes[this.index]=["","","",""];
+			this.classes[this.index][option]="selectedoption";
+			this.$forceUpdate();
+			console.log(this.answers)
+			if(this.index<5){
+				setTimeout(() => {
+				this.index++;
+			}, 500);
+			}
+		  },
+		  indexplus(){
+			  /* this.classes[this.index]=[]; */
+			  if(this.index<5){
+				  this.index++;
+			  }
+		  },
+		  indexreduce(){
+			  /* this.class=[]; */
+			  if(this.index>0){
+				  this.index--;
+			  }
+		  },
+		  play(){
+			  audio.play();
+			  this.playmusic=1;
+		  },
+		  pause(){
+			  audio.pause();
+			  this.playmusic=0;
+		  },
+		  submit(){
+			axios.post("/predict",{
+			text1:this.answers[0],
+			text2:this.answers[1],
+			text3:this.answers[2],
+			text4:this.answers[3],
+			text5:this.answers[4],
+			text6:this.answers[5]
+    	  })
+          .then((response) => {
+			if(response.data.answer!="error"){
+            	/* 接收数据 */
+			}
+			else{
+				alert("数据返回失败！");
+			}
+          })
+		  }
+	  },
+	  mounted(){
+		
+	  }
+    })
+  </script>
+</html>
