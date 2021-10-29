@@ -50,10 +50,10 @@
 			</div>
 		</div>
 		<div id="footer">
-			<div id="pgup" class="footericon" @click="indexreduce">上一题</div>
+			<div id="pgup" class="footericon" @click="indexreduce" :id="this.pgupid">上一题</div>
 			<div id="pgnow" class="footericon" v-text="this.index+1+'/6'"></div>
 			<div id="pudn" class="footericon" @click="indexplus" v-if="this.index!=5">下一题</div>
-			<div id="submit" class="footericon" @click="submit" v-if="this.index==5">提交</div>
+			<div id="submit" class="footericon" @click="submit" v-if="this.index==5" :id="this.submitid">提交</div>
 		</div>
 	</div>
 </body>
@@ -169,6 +169,12 @@
 			border-radius: 3vw;
 			opacity: 0.7;
 		}
+		#pgupdisabled {
+			opacity: 0.4;
+		}
+		#submitdisabled {
+			opacity: 0.4;
+		}
 		#pgnow {
 			background-color: inherit;
 		}
@@ -193,12 +199,12 @@
 			 	options:["总是这种感觉","多次这种感觉","只是有时候","偶尔会吧"]
 			 },{
 				question:"如果你发现一件短袖很有设计感，但是所在店铺从没听过，你会购买吗？",
-			 	options:["喜欢就买呗","再看看其他商品","有点担心商品的质量",""]
+			 	options:["喜欢就买呗","再看看其他商品","有点担心商品的质量","不予考虑"]
 			 },{
-				question:"你喜欢囤货吗",
+				question:"你喜欢囤货吗？",
 			 	options:["囤货给我安全感","囤不过期的货","很少囤","不想囤占地方"]
 			 },{
-				question:"在购物时，你会货比三家吗",
+				question:"在购物时，你会货比三家吗？",
 			 	options:["不止三家，是N家","一般比一比 比较稳妥","有时候会比较","一眼看上就不比啦"]
 			 },
 		 ],
@@ -212,7 +218,9 @@
 			 ["","","",""],
 			 ["","","",""]
 		 ],
-		 playmusic:0
+		 playmusic:0,
+		 pgupid: "pgupdisabled",
+		 submitid: ""
       },
 	  methods: {
 		  select(option){
@@ -221,22 +229,31 @@
 			this.classes[this.index][option]="selectedoption";
 			this.$forceUpdate();
 			console.log(this.answers)
-			if(this.index<5){
-				setTimeout(() => {
-				this.index++;
+			setTimeout(() => {
+				indexplus();
 			}, 500);
-			}
 		  },
 		  indexplus(){
 			  /* this.classes[this.index]=[]; */
 			  if(this.index<5){
 				  this.index++;
 			  }
+			  if(this.answers[0]==""||this.answers[1]==""||this.answers[2]==""||this.answers[3]!=""||this.answers[4]==""||this.answers[5]==""){
+				  this.submitid = "submitdisabled";
+			  }
+			  else
+			  {
+				  this.submitid = ""
+			  }
+			  this.pgupid = "";
 		  },
 		  indexreduce(){
 			  /* this.class=[]; */
 			  if(this.index>0){
 				  this.index--;
+			  }
+			  if(this.index==0){
+				  this.pgupid = "pgupdisabled"
 			  }
 		  },
 		  play(){
@@ -248,22 +265,27 @@
 			  this.playmusic=0;
 		  },
 		  submit(){
-			axios.post("/predict",{
-			text1:this.answers[0],
-			text2:this.answers[1],
-			text3:this.answers[2],
-			text4:this.answers[3],
-			text5:this.answers[4],
-			text6:this.answers[5]
-    	  })
-          .then((response) => {
-			if(response.data.answer!="error"){
-            	/* 接收数据 */
+			if(this.answers[0]!=""&&this.answers[1]!=""&&this.answers[2]!=""&&this.answers[3]!=""&&this.answers[4]!=""&&this.answers[5]!=""){
+				axios.post("/predict",{
+					text1:this.answers[0],
+					text2:this.answers[1],
+					text3:this.answers[2],
+					text4:this.answers[3],
+					text5:this.answers[4],
+					text6:this.answers[5]
+				})
+				.then((response) => {
+					if(response.data.answer!="error"){
+						/* 接收数据 */
+					}
+					else{
+						alert("数据返回失败！");
+					}
+				})
 			}
 			else{
-				alert("数据返回失败！");
+				alert("还有题目未完成！")
 			}
-          })
 		  }
 	  },
 	  mounted(){
