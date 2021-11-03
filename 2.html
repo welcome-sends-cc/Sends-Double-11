@@ -31,7 +31,16 @@
     </script>
 	<div id="app">
 		<audio id="audio" src="E:\workplace\code\web\双11\music.mp3" loop="loop"></audio>
-		<div id="background"></div>
+		<div id="background">
+			<div id="c8" class="circle"></div>
+			<div id="c7" class="circle"></div>
+			<div id="c6" class="circle"></div>
+			<div id="c5" class="circle"></div>
+			<div id="c4" class="circle"></div>
+			<div id="c3" class="circle"></div>
+			<div id="c2" class="circle"></div>
+			<div id="c1" class="circle"></div>
+		</div>
 		<div id="header">
 			<div>Color测</div>
 			<div id="music" @click="play()" v-if="!playmusic">♫</div>
@@ -57,6 +66,54 @@
             padding: 0;
             font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
         }
+		#background {
+			position: absolute;
+			width:100vw;
+			height: 100vh;
+			filter: brightness(175%);
+		}
+		.circle{
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%,-50%);
+			box-sizing: border-box;
+			border-radius: 50%;
+		}
+		#c1 {
+			width: 14vw;
+			height: 14vw;
+			background-color: #595959;
+		}
+		#c2 {
+			width: 41vw;
+			height: 41vw;
+			background-color: #5e576d;
+		}#c3 {
+			width: 69vw;
+			height: 69vw;
+			background-color: #57616d;
+		}#c4 {
+			width: 81vw;
+			height: 81vw;
+			background-color: #467474;
+		}#c5 {
+			width :96vw;
+			height: 96vw;
+			background-color: #5b6d57;
+		}#c6 {
+			width: 111vw;
+			height: 111vw;
+			background-color: #6d6a57;
+		}#c7 {
+			width:157vw;
+			height: 157vw;
+			background-color: #6d6057;
+		}#c8 {
+			width:250vw;
+			height: 250vw;
+			background-color: #6d5857;
+		}
         /* @keyframes gradient-move {
                 0% {
                     background-position: 0% 50%;
@@ -68,7 +125,8 @@
                     background-position: 0% 50%;
                 }
             } */
-        #background{
+		
+        /* #background{
 			position: absolute;
 			width: 100vw;
 			height: 100vh;
@@ -76,13 +134,13 @@
 				hsl(190deg, 80% ,70%),
 				hsl(250deg, 80%, 70%),
 				hsl(320deg, 80%, 70%)
-            );
+            ); */
             /* background-size: 200% 200%;
             animation-name: gradient-move;
             animation-duration: 6s;
             animation-iteration-count:infinite;
-            animation-direction: alternate; */
-        }
+            animation-direction: alternate; 
+        }*/
 		#header {
 			position: relative;
 			width: 100vw;
@@ -125,7 +183,7 @@
 			justify-content: center;
 			align-items: center; */
 			border-radius: 5vw;
-			opacity: 0.9;
+			opacity: 1;
 		}
 		#sentences {
 			margin: 4vh auto 0 auto;
