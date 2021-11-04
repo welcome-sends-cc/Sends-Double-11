@@ -30,7 +30,7 @@
 		},"orientationchange")
     </script>
 	<div id="app">
-		<audio id="audio" src="E:\workplace\code\web\双11\music.mp3" loop="loop"></audio>
+		<audio id="audio" src="music.mp3" loop="loop"></audio>
 		<div id="background">
 			<div id="c4" class="circle"></div>
 			<div id="c3" class="circle"></div>
@@ -51,7 +51,7 @@
 					<li v-text="this.questions[this.index].options[2]" :class="this.classes[this.index][2]" @click="select(2)"></li>
 					<li v-text="this.questions[this.index].options[3]" :class="this.classes[this.index][3]" @click="select(3)"></li>
 				</ul>
-				<div id="picture"></div>
+				<img id="picture" :src="this.pictures[this.index]"></img>
 			</div>
 		</div>
 		<div id="footer">
@@ -182,10 +182,9 @@
 			border-radius: 5vw;
 		}
 		.selectedoption {
-			background-color: rgb(29, 100, 182) !important;
+			background-color: #bde5fc !important;
 		}
 		#picture {
-			background-image: url(动画.png);
 			background-size: 86vw 25vh;
 			margin: 0 auto 2vh auto;
 			width: 86vw;
@@ -261,6 +260,14 @@
 			 ["","","",""],
 			 ["","","",""]
 		 ],
+		 pictures:[
+			 "薯片.png",
+			 "羊毛党.png",
+			 "冲动小人.png",
+			 "衣橱.png",
+			 "马路.png",
+			 "街道和逛街的人.png"
+		 ],
 		 playmusic:0,
 		 pgupid: "pgupdisabled",
 		 submitid: ""
@@ -272,21 +279,26 @@
 			this.classes[this.index][option]="selectedoption";
 			this.$forceUpdate();
 			console.log(this.answers)
-			setTimeout(() => {
-				indexplus();
+			if(this.index!=5){
+				setTimeout(() => {
+				this.indexplus();
 			}, 500);
+			}
+			else{
+				this.indexplus();
+			}
 		  },
 		  indexplus(){
 			  /* this.classes[this.index]=[]; */
 			  if(this.index<5){
 				  this.index++;
 			  }
-			  if(this.answers[0]==""||this.answers[1]==""||this.answers[2]==""||this.answers[3]!=""||this.answers[4]==""||this.answers[5]==""){
+			  if(this.answers[0]==""||this.answers[1]==""||this.answers[2]==""||this.answers[3]==""||this.answers[4]==""||this.answers[5]==""){
 				  this.submitid = "submitdisabled";
 			  }
 			  else
 			  {
-				  this.submitid = ""
+				  this.submitid = "";
 			  }
 			  this.pgupid = "";
 		  },
