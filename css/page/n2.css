@@ -1,0 +1,28 @@
+#n2{
+    width: 100vw;
+    height: auto;
+
+    margin-top: 0.5vh;
+}
+#n2_detail_content{
+    width: 90vw;
+    position: relative;
+    margin: 3vh 0;
+    margin-bottom: 0;
+
+    padding: 1rem;
+    border: orange 3px solid;
+    font-size: 15px;
+    color: orange;
+
+    border-radius: 20px;
+}
+
+.mediateVertical{
+    position: relative;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}

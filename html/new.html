@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ch" xmlns:img="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" id="viewportMeta" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../css/page/main.css">
+	<link rel="stylesheet" href="../css/page/radar.css">
+	<link rel="stylesheet" href="../css/page/n1.css">
+	<link rel="stylesheet" href="../css/page/n2.css">
+	<link rel="stylesheet" href="../css/colorfulFont/style.css">
+
+	<!--这里是艺术字-->
+	<link rel="stylesheet" href="../css/page/colorfulFont.css">
+
+	<title>new</title>
+</head>
+
+<body>
+    <script type="text/javascript" src="../js/screenSelfadapting.js"></script>
+
+	<div id="app" v-cloak>
+		<div id="background"></div>
+
+    	<div id="header" class="color_bg">
+			<div class="wrapper color_bg">
+				<div class="content">
+					购物性格趣味分析
+				</div>
+			</div>
+			<div id="music" @click="play()" v-if="!playmusic">♫</div>
+			<div id="music" @click="pause()" v-if="playmusic">■</div>
+		</div>
+
+		<div id="main">
+			<div id = "radar">
+				<div class = "tip color_bg" style = "margin-top: 1.5vh;">
+					<h2>测试结果</h2>
+				</div>
+
+				<span style = "z-index: 0;  width: 4vh; height: 4vh; background: #e0c700;margin-top: 1vh;
+				 border-top-right-radius: 50%; border-bottom-right-radius: 50%; margin-left: -2vh;clear: right" ></span>
+				<div style="clear:both;"></div>
+
+				<div id = "radar_graph_div">
+					<img id = "radar_graph_img" src="../images/radar/x.png">
+				</div>
+			</div>
+
+			<div id = "n1" style = "z-index:0">
+				<div class = "tip color_bg">
+					<h2 class="mediateVertical">N1</h2>
+				</div>
+
+				<div id = "n1_type">
+					<div id = "n1_type_background" class="color_bg">
+						<h2 id = "n1_type_result" class="mediateBoth_children" v-text="this.results[this.value].type"></h2>
+					</div>
+				</div>
+
+<!--				<div id = "n1_img_background">-->
+<!--					<img :src = "this.radarImgSrc"  id="n1_img">-->
+<!--				</div>-->
+
+				<div id = "n1_img_background">
+					<img src = "../images/cartoon/1.png" id="n1_img"></img>
+				</div>
+
+				<div id="n1_detail_block">
+					<h2 id="n1_detail_content" class="color_bg" v-text="this.results[this.value].N1"></h2>
+				</div>
+
+			</div>
+		</div>
+
+		<div id = "n2">
+			<div class = "tip color_bg">
+				<h2>N2</h2>
+			</div>
+
+			<div id="n2_detail_block">
+				<h2 id="n2_detail_content" v-text="this.results[this.value].N2">
+				</h2>
+			</div>
+		</div>
+
+		<div id="footer" class="color_bg">
+			<div id="pgup" class="footericon" style="width: auto;padding: 0 10px" @click="retest()">重测一下～</div>
+			<!-- <div id="pudn" class="footericon" @click="switchIndex">切换Value</div> -->
+		</div>
+
+	</div>
+</body>
+
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script src="../js/colorfulFont.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+		 answers:["","","","","",""],
+		 index:0,
+		  // radarImgSrc:'',
+		  // cartoonImgSrc:'',
+		 test_value: 0,
+		 bgColor:[
+		  		"rgba(228, 107, 99)",
+		  		"rgba(247, 148, 29)",
+		  		"rgba(255, 209, 1)",
+		  		"rgba(163, 195, 70)",
+			    "rgba(68, 187, 183)",
+			    "rgba(79, 146, 189)",
+		  		"rgba(155, 91, 214)",
+		  		"rgba(148, 148, 148)"
+				],
+		 results:[
+			 {
+				 type:"红色：Impulsive, careless 冲动型",
+				 N1:"这种导向消费者在购物方面表现出冲动型，没有事先拟定计划，不关心花了多少钱或者己购买产品是否合理、划算。",
+				 N2:"建议：设定一个购物缓冲期 ——当自己想要付款时，先告诉自己“先看看再说，过几天我再来买，反正放在这里又跑不了",
+			 },
+			 {
+				 type:"橙色：Recreational and hedonistic 享受型",
+				 N1:"该导向的消费者 /倾向于把购物看成一种乐趣，目的是让自己快乐。但是过量地消费，囤货其实是一种浪费。",
+				 N2:"建议：设定预算——当你的手里只有这么多钱，就会限制自己的欲望啦。",
+			 },
+			 {
+				 type:"黄色：Confused by over choice 纠结型",
+				 N1:"这种导向消费者因为其平时对品牌和商店的相关信息过多，导致其在购物时作决策比较困难。 这类型也被称作“眼花缭乱”型。",
+				 N2:"建议：从需求出发——信息量过多会脑袋短路？那就先想清楚自己需要什么，自己的要求是什么，再按照想好的要求去对应着搜索就好。",
+			 },
+			 {
+				 type:"绿色：Perfectionistic, high-quality conscious 实用型",
+				 N1:"该导向的消费者对产品的质量要求非常高，在进行消费时，寻找他们最大程度满意的产品，他们在购物时会系统、仔细地比较产品。",
+				 N2:"建议：等级分类——对商品的质量要求高没有问题，但是在生活中不是所有的商品都需要高质量，比如一些快消品（草稿纸等）。",
+			 },
+			 {
+				 type:"青色：Habitual, brand-loyal 忠诚型",
+				 N1:"这种导向的消费者有自己喜好的品牌和商店，偏向去自己经常去的商店或购买经常使用的商品品牌，并且已经形成了习惯。",
+				 N2:"建议：关注品牌变化——品牌建设过程中，也可能存在发展变差的时候，当商品不再满足自己的喜好，可更换品牌。",
+			 },
+			 {
+				 type:"蓝色：Novelty-fashion conscious 好奇型",
+				 N1:"该种导向的消费者乐于购买新奇度高的产品，他们也想从中得到令人兴奋和愉悦的感觉，他们紧跟潮流，在购物时也表现出对产品多样化的要求。",
+				 N2:"建议：考虑适用性——你的最大需求是满足自己的探索欲和好奇心，但也要考虑第二需求，那就是怎么把新奇的商品在生活中使用起来",
+			 },
+			 {
+				 type:"紫色：Brand conscious, price equals quality 品牌型",
+				 N1:"这种导向的消费者倾向于购买知名品牌、价格高的产品。他们多去一些专卖店，并乐于购买一些卖得多的产品和广告效应较大的产品。",
+				 N2:"建议：适当追求品牌——品牌也是商家的一种营销方式，如果商品质量对等的情况，在品牌效应的影响下会增加一定的价格。",
+			 },
+			 {
+				 type:"黑色：Price conscious, 'value for money' 低价型",
+				 N1:"该导向的消费者对价格和价值比较关注，他们非常注重性价比，希望购买到合适价格或者低价格的产品，并且希望付出的金钱和产品的价值是对等的。",
+				 N2:"建议：适当追求低价——物价对等才是商品的价值规律，过低的价格违背价值规律，且需要一定的消费来提高生活质量。",
+			 },
+		 ],
+		 playmusic:parent.playmusic,
+		 pgupid: "pgupdisabled",
+		 submitid: "",
+		 value:7
+      },
+	  methods: {
+		  getTextLength(str){
+			  var len = 0;
+			  for (var i = 0; i < str.length; i++) {
+				  var a = str.charAt(i);
+				  if (a.match(/[^\x00-\xff]/ig) != null) {
+					  len += 1;
+				  } else {
+					  len += 0.5;
+				  }
+			  }
+			  return len;
+		  },
+
+		  initFontSize(){
+		  	var hhwidth = document.getElementById("n1_type_background").offsetWidth;
+			var strLen = this.getTextLength(document.getElementById("n1_type_result").innerText);
+			document.getElementById("n1_type_result").style.fontSize = hhwidth / strLen + '%';
+		  },
+
+		  initColor(value){
+			  document.getElementById('n1_detail_content').style.backgroundColor = this.bgColor[value];
+			  document.getElementById('n2_detail_content').style.borderColor = this.bgColor[value];
+			  document.getElementById('n2_detail_content').style.color = this.bgColor[value];
+			  var num = document.querySelectorAll('.color_bg');
+			  for (var i = 0; i < num.length; i++) {
+				  num[i].style.backgroundColor = this.bgColor[value];
+			  }
+		  },
+
+		  // initImgs(value){
+		  // 	this.radarImgSrc = require('../images/cartoon/7.png');
+		  // 	// this.radarImgSrc = this.radarImgSrc.slice(0, -5) + value + '.png';
+		  //
+			//  alert(his.radarImgSrc);
+			//   document.getElementById('radar_graph_img').src =
+			// 		  document.getElementById('radar_graph_img').src.slice(0, -5) + value + '.png';
+		  // },
+		  initImgs(value){
+		  	document.getElementById('n1_img').src =
+					document.getElementById('n1_img').src.slice(0, -5) + value + '.png';
+
+			 // alert(his.radarImgSrc);
+			  document.getElementById('radar_graph_img').src =
+					  document.getElementById('radar_graph_img').src.slice(0, -5) + value + '.png';
+		  },
+
+
+		  initAll(value){
+		  	this.initFontSize(value);
+		  	this.initColor(value);
+		  	this.initImgs(value);
+		  },
+
+
+		  switchIndex() {
+			  this.value++;
+			  if (this.value === 8)
+			  {
+			  	this.value = 0;
+			  }
+			  this.initAll(this.value);
+		  },
+
+		  play(){
+			parent.audio.play();
+			this.playmusic=1;
+			parent.playmusic=1;
+		  },
+		  pause(){
+			parent.audio.pause();
+			this.playmusic=0;
+			parent.playmusic=0;
+		  },
+		  retest(){
+			  localStorage.value="";
+			  location.href="3.html";
+		  }
+
+	  },
+	  mounted(){
+      	  /* this.initImgs();
+      	  this.initColor(); */
+      	  this.value=localStorage.value;
+		  this.initAll(this.value);
+	  }
+    })
+  </script>
+</html>

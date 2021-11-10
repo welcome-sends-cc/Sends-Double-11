@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ch">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" id="viewportMeta" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <title>购物决策风格趣味测试</title>
+</head>
+<body>
+    <audio id="audio" src="../music/music.mp3" loop="loop"></audio>
+    <iframe src="1.html" id="html"></iframe>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow: hidden;
+            font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+        }
+        #html {
+            width: 100vw;
+            height: 101vh;
+            border: 0px
+        }
+    </style>
+    <script>
+        var playmusic=0;
+        var images = new Array()  
+        function preload() {  
+            for (i = 0; i < preload.arguments.length; i++) {  
+                images[i] = new Image()  
+                images[i].src = preload.arguments[i]  
+            }  
+        }  
+        preload(  
+            "..\\images\\questions\\p1.png",
+			"..\\images\\questions\\p2.png",
+			"..\\images\\questions\\p3.png",
+			"..\\images\\questions\\p4.png",
+			"..\\images\\questions\\p5.png",
+			 "..\\images\\questions\\p6.png" 
+        )    
+    </script>
+    <script type="text/javascript" src="../js/screenSelfadapting.js"></script>
+</body>
+</html>
